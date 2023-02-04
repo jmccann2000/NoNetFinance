@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import os.path
 import csv
 import data_viewer
+import pandas as pd
 
 # First the window layout in 2 columns
 file_list_column = [
@@ -31,12 +32,9 @@ def import_file(window, values):
     full_filename = os.path.join(
                 values["-FOLDER-"], filename
             )
-    with open(full_filename, 'r') as file:
-        reader = csv.reader(file)
-        header = next(reader)
-        data = [row for row in reader]
+    data_panda = pd.read_csv(full_filename)
     window.close()
-    data_viewer.create(filename, header, data)
+    data_viewer.create(filename, data_panda)
 
 def fetch_directory_content(window, values):
     folder = values["-FOLDER-"]
