@@ -1,5 +1,5 @@
 import PySimpleGUI as Gui
-import main_splash
+import main_menu
 
 
 def regulate_data(panda, header, desc_col_label, date_col_label, category_col_label, cost_col_label):
@@ -33,5 +33,6 @@ def create(filename, panda):
             if required_data_filled:
                 panda = regulate_data(panda, headers, values["-DESC-"], values["-DATE-"],
                                       values["-CATEGORY-"], values["-COST-"])
-                main_splash.create(panda)
+                window.close()
+                main_menu.create(panda)
     window.close()
