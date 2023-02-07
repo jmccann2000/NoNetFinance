@@ -1,6 +1,8 @@
 import PySimpleGUI as Gui
 import numpy as np
 
+import rules_menu
+
 
 def print_category_value(pct, all_vals):
     absolute = int(np.round(pct / 100. * np.sum(all_vals)))
@@ -35,19 +37,35 @@ def create(panda):
     headers = panda.columns.values.tolist()
     data_table = [
         [Gui.Table(values=panda.values.tolist(), headings=headers, auto_size_columns=True, key="-DATATABLE-")],
-        [Gui.Button("Exit")]
+
     ]
     total_spent = panda.loc[:, "Cost"].sum()
-    stat_menu = [
-        [Gui.Text("Total Spent:"), Gui.Text("$" + str(total_spent))]
+    header = [
+        [Gui.Text("Total Spent: $"+str(total_spent))]
+    ]
+    categories_pane = [
+        [Gui.Text("Categories:")],
+        [Gui.Column([
+            [Gui.Button("Auto/Gas"),
+             Gui.Text("$123.12")],
+            [Gui.Button("Grocery"),
+             Gui.Text("$500.12")]
+        ])],
+        [Gui.Button("Edit Categories")]
+    ]
+    footer = [
+        [Gui.Button("Exit"), Gui.Button("Rules")]
     ]
     layout = [
-        [Gui.Column(data_table), Gui.VerticalSeparator(), Gui.Column(stat_menu)]
+        [header],
+        [Gui.Column(data_table), Gui.VerticalSeparator(), Gui.Column(categories_pane)],
+        [footer]
     ]
     window = Gui.Window("Spending Overview",
                         layout)
-
     while True:
         event, values = window.read()
         if event == "Exit" or event == Gui.WIN_CLOSED:
             break
+        if event == "Rules":
+            rules_menu.create(["category1", "cat2"])
