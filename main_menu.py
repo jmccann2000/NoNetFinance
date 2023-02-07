@@ -41,20 +41,26 @@ def create(panda):
     ]
     total_spent = panda.loc[:, "Cost"].sum()
     header = [
-        [Gui.Text("Total Spent: $"+str(total_spent))]
+        [
+            Gui.Text("Total Spent: $"+str(total_spent), font=("Helvetica", 15, "bold")),
+            Gui.Push(),
+            Gui.Text("11/16/22 - 12/16/22", font=("Helvetica", 13))
+         ]
     ]
     categories_pane = [
-        [Gui.Text("Categories:")],
+        [Gui.Text("Categories:", font=("Helvetica", 12))],
         [Gui.Column([
             [Gui.Button("Auto/Gas"),
+             Gui.Push(),
              Gui.Text("$123.12")],
             [Gui.Button("Grocery"),
+             Gui.Push(),
              Gui.Text("$500.12")]
         ])],
         [Gui.Button("Edit Categories")]
     ]
     footer = [
-        [Gui.Button("Exit"), Gui.Button("Rules")]
+        [Gui.Button("Exit"), Gui.Push(), Gui.Button("Rules")]
     ]
     layout = [
         [header],
@@ -69,3 +75,4 @@ def create(panda):
             break
         if event == "Rules":
             rules_menu.create(["category1", "cat2"])
+            window.bring_to_front()
