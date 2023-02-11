@@ -47,16 +47,17 @@ def create(panda):
             Gui.Text("11/16/22 - 12/16/22", font=("Helvetica", 13))
          ]
     ]
+    category_to_cost  = sorted(category_sums(panda).items(), key=lambda x:x[1])
+    sortdict = dict(category_to_cost)
+    categories_column = []
+    for key in sortdict:
+        key_as_ui = [Gui.Button(key), Gui.Push(), Gui.Text("$" + str(sortdict[key]))]
+        categories_column.append(key_as_ui)
+
+    categories_column.reverse()
     categories_pane = [
         [Gui.Text("Categories:", font=("Helvetica", 12))],
-        [Gui.Column([
-            [Gui.Button("Auto/Gas"),
-             Gui.Push(),
-             Gui.Text("$123.12")],
-            [Gui.Button("Grocery"),
-             Gui.Push(),
-             Gui.Text("$500.12")]
-        ])],
+        [Gui.Column(categories_column)],
         [Gui.Button("Edit Categories")]
     ]
     footer = [
