@@ -2,11 +2,7 @@ import PySimpleGUI as Gui
 import numpy as np
 
 import rules_menu
-
-
-def print_category_value(pct, all_vals):
-    absolute = int(np.round(pct / 100. * np.sum(all_vals)))
-    return "{:.1f}% (${:d})".format(pct, absolute)
+import category_ui
 
 
 def category_sums(panda):
@@ -76,4 +72,6 @@ def create(panda):
             break
         if event == "Rules":
             rules_menu.create(["category1", "cat2"])
+        if event in set(panda["Category"]):
+            category_ui.create(panda, event)
             window.bring_to_front()
