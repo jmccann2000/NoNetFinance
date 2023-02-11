@@ -3,6 +3,7 @@ import numpy as np
 
 import rules_menu
 import category_ui
+import edit_category_ui
 
 
 def category_sums(panda):
@@ -75,3 +76,5 @@ def create(panda):
         if event in set(panda["Category"]):
             category_ui.create(panda, event)
             window.bring_to_front()
+        if event == "Edit Categories":
+            edit_category_ui.build(panda)
