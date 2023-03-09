@@ -4,6 +4,9 @@ def build(panda):
     header =   [
             Gui.Text("Categories", font=("Helvetica", 15, "bold"))
          ]
+    categories = [
+            
+        ]
     footer = [
         [Gui.Button("Exit"), Gui.Push(), Gui.Button("Add Category")]
     ]
