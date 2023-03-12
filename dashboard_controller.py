@@ -1,10 +1,12 @@
 from dashboard_view import DashboardView
 from category_controller import CategoryController
+from edit_category_controller import EditCategoryController
 
 class DashboardController:
     def __init__(self):
         self.view = DashboardView(self)
         self.category_controller = CategoryController()
+        self.edit_category_controller = EditCategoryController()
 
     def category_sums(self):
         panda = self.model.data_table
@@ -32,6 +34,9 @@ class DashboardController:
 
     def open_category(self, category):
         self.category_controller.run(self.model, category)
+
+    def open_edit_categories(self):
+        self.edit_category_controller.run(self.model)
 
     def run(self, model):
         self.model = model
