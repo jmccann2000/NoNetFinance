@@ -1,8 +1,5 @@
-import PySimpleGUI as Gui
 import os.path
 import pandas as pd
-import sys
-sys.path.append("..")
 from import_transactions_view import ImportTransactionsView
 
 
