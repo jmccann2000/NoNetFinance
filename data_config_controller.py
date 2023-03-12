@@ -9,6 +9,7 @@ class DataConfigController:
           header.remove(date_col_label)
           header.remove(category_col_label)
           header.remove(cost_col_label)
+          header.remove(desc_col_label)
           self.model.data_table.drop(header, inplace=True, axis=1)
           name_mapping = {desc_col_label: "Description", date_col_label: "Date", category_col_label: "Category",
                               cost_col_label: "Cost"}
