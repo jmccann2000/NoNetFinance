@@ -48,8 +48,8 @@ class DashboardView:
                 break
             # if event == "Rules":
             #     rules_menu.create(["category1", "cat2"])
-            # if event in set(panda["Category"]):
-            #     category_ui.create(panda, event)
-            #     window.bring_to_front()
+            if event in set(panda["Category"]):
+                 self.controller.open_category(event)
+                 window.bring_to_front()
             # if event == "Edit Categories":
             #     edit_category_ui.build(panda)

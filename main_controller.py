@@ -9,7 +9,6 @@ class MainController:
         self.import_controller = ImportTransactionsController()
         self.data_config_controller = DataConfigController()
         self.dashboard_controller = DashboardController()
-        self.window = Gui.Window("Main Menu", [[Gui.Button("Import Data")]])
         self.model = Model()
 
     def start(self):
