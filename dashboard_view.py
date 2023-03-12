@@ -46,8 +46,8 @@ class DashboardView:
             event, values = window.read()
             if event == "Exit" or event == Gui.WIN_CLOSED:
                 break
-            # if event == "Rules":
-            #     rules_menu.create(["category1", "cat2"])
+            if event == "Rules":
+                self.controller.open_rules()
             if event in set(panda["Category"]):
                 self.controller.open_category(event)
                 window.bring_to_front()
