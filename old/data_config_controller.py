@@ -18,4 +18,4 @@ class DataConfigController:
 
      def run(self, model):
           self.model = model
-          self.view.show() 
+          self.model.show
