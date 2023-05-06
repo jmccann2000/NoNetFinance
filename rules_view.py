@@ -1,4 +1,4 @@
-import PySimpleGUI as Gui
+import tkinter as tk
 
 class RulesView:
     def __init__(self, controller):
@@ -6,37 +6,39 @@ class RulesView:
         self.window = None
 
     def show(self):
-        header = [
-            Gui.Titlebar("Rules")
-        ]
-        rules_pane = [
-            [
-                Gui.Text("If contains 'ball', move to "),
-                Gui.DropDown(["Auto/Gas", "Grocery"]),
-                Gui.Button("-")
-            ]
-        ]
-        footer = [
-            [Gui.Button("Back/Apply"), Gui.Push(), Gui.Button("Add Rule"), Gui.Push(), Gui.Button("Back")]
-        ]
-        layout = [
-            header,
-            [Gui.VPush()],
-            rules_pane,
-            [Gui.VPush()],
-            footer
-        ]
-        window = Gui.Window("Rules",
-                            layout)
-        while True:
-            event, values = window.read()
-            if event == "Back" or event == Gui.WIN_CLOSED:
-                break
-            if event == "Back/Apply":
-                break
+        self.window = tk.Tk()
+        self.window.title("Rules")
 
-        window.close()
+        header = tk.Label(self.window, text="Rules", font=("Helvetica", 15, "bold"))
+        header.pack(pady=(0, 10))
+
+        rules_pane = tk.Frame(self.window)
+        rules_pane.pack(pady=(10, 10))
+
+        text = tk.Label(rules_pane, text="If contains 'ball', move to ")
+        text.pack(side=tk.LEFT)
+
+        options = ["Auto/Gas", "Grocery"]
+        dropdown = tk.OptionMenu(rules_pane, tk.StringVar(value=options[0]), *options)
+        dropdown.pack(side=tk.LEFT)
+
+        remove_button = tk.Button(rules_pane, text="-")
+        remove_button.pack(side=tk.LEFT)
+
+        footer = tk.Frame(self.window)
+        footer.pack(fill=tk.X, pady=(10, 0))
+
+        back_apply_button = tk.Button(footer, text="Back/Apply")
+        back_apply_button.pack(side=tk.LEFT)
+
+        add_rule_button = tk.Button(footer, text="Add Rule")
+        add_rule_button.pack(side=tk.RIGHT, padx=(0, 10))
+
+        back_button = tk.Button(footer, text="Back")
+        back_button.pack(side=tk.RIGHT)
+
+        self.window.mainloop()
 
     def close(self):
         if self.window is not None:
-            self.window.close()
+            self.window.destroy()
