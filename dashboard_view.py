@@ -1,56 +1,73 @@
-import PySimpleGUI as Gui
+import tkinter as tk
+from tkinter import ttk
+import pandas as pd
 
 class DashboardView:
     def __init__(self, controller):
         self.controller = controller
-    
+        self.window = tk.Tk()
+        self.window.title("Spending Overview")
+
     def show(self):
         panda = self.controller.model.data_table
         headers = panda.columns.values.tolist()
-        data_table = [
-            [Gui.Table(values=panda.values.tolist(), headings=headers, auto_size_columns=True, key="-DATATABLE-")],
 
-        ]
+        # Header
         total_spent = panda.loc[:, "Cost"].sum()
-        header = [
-            [
-                Gui.Text("Total Spent: $"+str(total_spent), font=("Helvetica", 15, "bold")),
-                Gui.Push(),
-                Gui.Text("11/16/22 - 12/16/22", font=("Helvetica", 13))
-            ]
-        ]
-        category_to_cost  = sorted(self.controller.category_sums().items(), key=lambda x:x[1])
-        sortdict = dict(category_to_cost)
-        categories_column = []
-        for key in sortdict:
-            key_as_ui = [Gui.Button(key), Gui.Push(), Gui.Text("$" + str(sortdict[key]))]
-            categories_column.append(key_as_ui)
+        header_frame = tk.Frame(self.window)
+        header_frame.pack(fill=tk.X, pady=(0, 10))
 
-        categories_column.reverse()
-        categories_pane = [
-            [Gui.Text("Categories:", font=("Helvetica", 12))],
-            [Gui.Column(categories_column)],
-            [Gui.Button("Edit Categories")]
-        ]
-        footer = [
-            [Gui.Button("Exit"), Gui.Push(), Gui.Button("Rules")]
-        ]
-        layout = [
-            [header],
-            [Gui.Column(data_table), Gui.VerticalSeparator(), Gui.Column(categories_pane)],
-            [footer]
-        ]
-        window = Gui.Window("Spending Overview",
-                            layout)
-        while True:
-            event, values = window.read()
-            if event == "Exit" or event == Gui.WIN_CLOSED:
-                break
-            if event == "Rules":
-                self.controller.open_rules()
-            if event in set(panda["Category"]):
-                self.controller.open_category(event)
-                window.bring_to_front()
-            if event == "Edit Categories":
-                self.controller.open_edit_categories()
-        window.Close()
+        total_spent_label = tk.Label(header_frame, text="Total Spent: $" + str(total_spent), font=("Helvetica", 15, "bold"))
+        total_spent_label.pack(side=tk.LEFT)
+
+        date_label = tk.Label(header_frame, text="11/16/22 - 12/16/22", font=("Helvetica", 13))
+        date_label.pack(side=tk.RIGHT)
+
+        # Data table
+        table_frame = tk.Frame(self.window)
+        table_frame.pack(side=tk.LEFT, padx=(0, 10))
+
+        tree = ttk.Treeview(table_frame, columns=headers, show="headings")
+        for column in headers:
+            tree.heading(column, text=column)
+            tree.column(column, stretch=True)
+
+        for index, row in panda.iterrows():
+            tree.insert("", "end", values=row.tolist())
+
+        tree.pack(fill=tk.BOTH, expand=True)
+
+        # Categories pane
+        categories_frame = tk.Frame(self.window)
+        categories_frame.pack(side=tk.LEFT)
+
+        categories_label = tk.Label(categories_frame, text="Categories:", font=("Helvetica", 12))
+        categories_label.pack(anchor=tk.NW, pady=(0, 5))
+
+        category_to_cost = sorted(self.controller.category_sums().items(), key=lambda x: x[1])
+        sortdict = dict(category_to_cost)
+
+        for key in sortdict:
+            key_frame = tk.Frame(categories_frame)
+            key_frame.pack(fill=tk.X, pady=(0, 5))
+
+            category_button = tk.Button(key_frame, text=key, command=lambda key=key: self.controller.open_category(key))
+            category_button.pack(side=tk.LEFT)
+
+            cost_label = tk.Label(key_frame, text="$" + str(sortdict[key]))
+            cost_label.pack(side=tk.RIGHT)
+
+        edit_categories_button = tk.Button(categories_frame, text="Edit Categories", command=self.controller.open_edit_categories)
+        edit_categories_button.pack(pady=(10, 0))
+
+        # Footer
+        footer_frame = tk.Frame(self.window)
+        footer_frame.pack(fill=tk.X, pady=(10, 0), anchor='s')
+
+        exit_button = tk.Button(footer_frame, text="Exit", command=self.window.destroy)
+        exit_button.pack(side=tk.LEFT, anchor='sw')
+
+        rules_button = tk.Button(footer_frame, text="Rules", command=self.controller.open_rules)
+        rules_button.pack(side=tk.RIGHT, anchor='se')
+
+        self.window.mainloop()
