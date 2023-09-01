@@ -54,20 +54,17 @@ class DashboardView:
             category_button = tk.Button(key_frame, text=key, command=lambda key=key: self.controller.open_category(key))
             category_button.pack(side=tk.LEFT)
 
-            cost_label = tk.Label(key_frame, text="$" + str(sortdict[key]))
+            cost_label = tk.Label(key_frame, text="$" + str(round(sortdict[key],2)))
             cost_label.pack(side=tk.RIGHT)
 
-        edit_categories_button = tk.Button(categories_frame, text="Edit Categories", command=self.controller.open_edit_categories)
-        edit_categories_button.pack(pady=(10, 0))
+        #Buttons
+        buttons_frame = tk.Frame(categories_frame)
+        buttons_frame.pack(pady=(10, 0))
 
-        # Footer
-        footer_frame = tk.Frame(self.window)
-        footer_frame.pack(fill=tk.X, pady=(10, 0), anchor='s')
+        edit_categories_button = tk.Button(buttons_frame, text="Edit Categories", command=self.controller.open_edit_categories)
+        edit_categories_button.pack(side=tk.LEFT, padx=(0, 10))
 
-        exit_button = tk.Button(footer_frame, text="Exit", command=self.window.destroy)
-        exit_button.pack(side=tk.LEFT, anchor='sw')
-
-        rules_button = tk.Button(footer_frame, text="Rules", command=self.controller.open_rules)
-        rules_button.pack(side=tk.RIGHT, anchor='se')
+        rules_button = tk.Button(buttons_frame, text="Rules", command=self.controller.open_rules)
+        rules_button.pack(side=tk.LEFT)
 
         self.window.mainloop()
